@@ -12,12 +12,12 @@ Data is generated using a digital twin out of a small sample data. sample data c
 
 The arquitecture is ready to be deployed using docker and docker-compose. Before following next steps, make sure you have both technologies installed and ready to use. The ``docker-compose.yml`` file will build a [Flask](https://flask.org) API service for data simulations with [PostgeSQL](https://www.postgresql.org/) as the data store. Note that Flask will represent the twin of the industrial process. An [AirFlow](http://airflow.apache.org) container will also be deployed which will use [PostgeSQL](https://www.postgresql.org/) as the metadata store too. Moreover, a [Jupyter](https://jupyter.org/) instance will be deployed to run simulations. Finally, a [Dash](https://plotly.com/dash/) server is used for the visualization of the results on real time.
 
-Follow these steps to build the MLflow-AirFlow-AutoML stack:
+Follow these steps to build the stack:
 
 1. Install docker (docker & docker-compose commands must be installed).
 2. git clone
 3. docker-compose up -d
 4. Open JupyterLab UI at http://your-docker-machine-ip:1997 and run all cells in simulator_run.py for starting the digital twin.
-5. Open Dash UI/Fornt at http://your-docker-machine-ip:8050 to see real time visualization.
+5. Open Dash UI/Front at http://your-docker-machine-ip:8050 to see real time visualization.
 6. Open Airflow UI at http://your-docker-machine-ip:8080 and turn dag On for cocnept drift evaluation.
 7. Enjoy!
