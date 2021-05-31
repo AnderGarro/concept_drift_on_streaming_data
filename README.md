@@ -1,3 +1,5 @@
+![STACK](img/visualization.PNG)
+
 # Concept Drift on Streaming Data
 Concept drift evaluation over time series in streaming data on a industrial use case. 
 
