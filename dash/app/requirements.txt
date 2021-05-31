@@ -1,0 +1,6 @@
+dash
+dash-daq
+dash-bootstrap-components
+requests
+numpy
+psycopg2

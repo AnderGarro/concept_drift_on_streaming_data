@@ -1,0 +1,129 @@
+version: '3'
+services:
+
+    jupyter:
+        build:
+            context: ./jupyter
+            dockerfile: Dockerfile
+        image: dev/jupyter
+        container_name: drift_jupyter_dev
+        hostname: jupyter
+        volumes:
+            - ./notebooks:/notebooks
+            - ./data:/data
+        ports:
+            - "1997:8888"
+        environment:
+            - SHM_SIZE=12gb
+        networks:
+            - backend
+
+
+    flask:
+        build:
+            context: ./flask
+            dockerfile: Dockerfile
+        image: dev/flask
+        container_name: drift_dev_flask
+        hostname: flask
+        volumes:
+            - ./data:/data
+        ports:
+            - "5001:5000"
+            - "1234:1234"
+        environment:
+            - SHM_SIZE=12gb
+        networks:
+            - backend
+
+
+    dash:
+        build:
+            context: ./dash
+            dockerfile: Dockerfile
+        image: dev/dash
+        container_name: drift_dev_dash
+        hostname: dash
+        volumes:
+            - ./data:/data
+            - ./dash/app/:/app
+        ports:
+            - "8050:8050"
+        environment:
+            - SHM_SIZE=12gb
+        networks:
+            - backend
+
+    postgres-data:
+        image: postgres:9.6
+        container_name: drift_dev_postgres
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=sc
+        ports:
+            - "15432:5432" #external port
+        networks:
+            - backend
+        volumes:
+            - ./data/postgres:/var/lib/postgresql/data #use it on linux
+        logging:
+           options:
+             max-size: 10m
+             max-file: "3"
+    
+    webserver:
+        build:
+            context: ./airflow
+            dockerfile: Dockerfile
+        image: airflow_local_dev
+        restart: always
+        container_name: drift_dev_airflow
+        depends_on:
+            - postgres
+        environment:
+            - LOAD_EX=n
+            - EXECUTOR=Local
+        logging:
+            options:
+                max-size: 10m
+                max-file: "3"
+        volumes:
+            - ./dags:/usr/local/airflow/dags
+            - ./data/:/data
+        ports:
+            - "8080:8080"
+        networks:
+            - backend
+            - airflow
+        command: webserver
+        healthcheck:
+            test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+            interval: 30s
+            timeout: 30s
+            retries: 3
+
+    postgres:
+        image: postgres:9.6
+        container_name: drift_dev_airflow_postgres
+        restart: always
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+        networks:
+            - airflow
+
+        logging:
+            options:
+                max-size: 10m
+                max-file: "3"
+
+
+networks:
+    backend:
+        driver: bridge
+    airflow:
+        driver: bridge
+
