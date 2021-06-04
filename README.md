@@ -5,9 +5,9 @@ Concept drift evaluation over time series in streaming data on a industrial use 
 
 Data is generated using a digital twin out of a small sample data. sample data comes from an indsutrial use case where a sensor captures a especific magnitude for an interval of 2-3 seconds on a 10 ms sample freq. Then, each time series contains 190-200 points. This process might simulate magnitdues such as pressure on a stamp or temperature on a drill process. Twin is deployed on a flask endpoint. 
 
-* A data simulator instantiates twin to generate data from three work stations. We use a jupyter notebooik to run the simulator. 
-* Data and its features are stored on real time on a postgress database. 
-* An airflow server orchestrates concept drift evaluation on a batch process
+* A data simulator instantiates twin to generate data from three work stations. We use a jupyter notebook to run the simulator. 
+* Data and its features are stored on real-time on a postgress database. 
+* An airflow server orchestrates concept drift evaluation on a batch process.
 * Results might be seen onreal time on a dash front.
 
 ## Getting Started:
